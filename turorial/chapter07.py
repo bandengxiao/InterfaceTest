@@ -120,7 +120,7 @@ def cancel_register(User:UserNew):
     return {"code": "400", "message": "用户不存在！"}
 
 #登录
-@app07.post("/login3")
+@app07.post("/login")
 def login (User:User):
 
     username=User.UserName

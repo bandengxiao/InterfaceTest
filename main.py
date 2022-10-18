@@ -1,3 +1,2 @@
-
-
-print('hello world')
+import platform
+platform.architecture()
