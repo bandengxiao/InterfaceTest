@@ -142,3 +142,8 @@ def get_UserInfo(token:str):
         if token == data[key]["token"]:
             return {"code":"200","userInfo":data[key]}
     return {"code":"200","message":"无法识别用户身份！请确认token正确性。"}
+
+#测试接口
+@app07.post("/test")
+def login ():
+    return {"message":"success"}
