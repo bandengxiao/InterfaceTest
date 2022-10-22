@@ -6,7 +6,7 @@ from starlette.responses import PlainTextResponse
 from turorial import app03,app04,app05,app06,app07
 from fastapi.exceptions import HTTPException, RequestValidationError
 
-
+#这是一个测试注释
 # pip install -i https://pypi.tuna.tsinghua.edu.cn/simple/ -r requirements.txt
 
 app = FastAPI(
