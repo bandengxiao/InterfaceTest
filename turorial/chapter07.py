@@ -147,3 +147,8 @@ def get_UserInfo(token:str):
 @app07.post("/test")
 def login ():
     return {"message":"success"}
+
+#测试新接口
+@app07.post("/test/new")
+def login ():
+    return {"message":"success"}
