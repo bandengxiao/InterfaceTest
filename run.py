@@ -8,7 +8,7 @@ from fastapi.exceptions import HTTPException, RequestValidationError
 
 
 # pip install -i https://pypi.tuna.tsinghua.edu.cn/simple/ -r requirements.txt
-
+#请求地址：http://94.74.121.101:8000/  华为一年机器
 app = FastAPI(
     title='疫情跟踪器API文档',
     description='疫情跟踪器接口文档',
