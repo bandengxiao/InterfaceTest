@@ -59,7 +59,8 @@ def get_uuid():
 def register(User:User_detail):
     username=User.UserName
     if username in data.keys():
-        return {"code":"400","message":"用户名已存在！"}
+        return {"code":"200","message":"用户注册成功！","userInfo":data["tom"]} #输入存在的用户名也不会报错
+        #return {"code":"400","message":"用户名已存在！"}
     data[User.UserName]={
     "UserName": User.UserName,
     "password": User.PassWord,
@@ -83,7 +84,8 @@ def cancel_register(token:str=Header(...),UserName:str=Form(...),Password:str=Fo
             del data[username]
             return {"code":"200","message":"用户注销成功！"}
         return {"code":"400","message":"用户密码错误！"}
-    return {"code":"400","message":"用户不存在！"}
+    return {"code":"200","message":"用户注销成功！"} #输入不存在的用户名也会返回注销成功，但用户实际未注销
+    #return {"code":"400","message":"用户不存在！"}
 
 
 #找回密码
@@ -105,7 +107,8 @@ def reget(User:User_detail):
                 return {"code":"200","message": {"password":data[User.UserName]["password"]}}
             return {"code":"400","message":"用户名称错误！"}
         # return {"code": "400", "message": "用户密码错误！"}
-    return  {"code":"400","message":"用户不存在！"}
+    return {"code": "400", "message": "预留问题错误！"} #用户不存在时返回预留问题错误
+    #return  {"code":"400","message":"用户不存在！"}
 
 
 #修改密码
@@ -116,7 +119,8 @@ def cancel_register(User:UserNew):
         if User.PassWord == data[username]["password"]:
             data[username]["password"]=User.newPassWord
             return {"code":"200","message":"用户密码修改成功!"}
-        return {"code":"400","message":"密码错误！"}
+        return {"code":"400","message":"用户不存在！"}#密码错误时返回用户不存在
+        #return {"code": "400", "message": "密码错误！"}
     return {"code": "400", "message": "用户不存在！"}
 
 #登录
@@ -132,7 +136,8 @@ def login (User:User):
             data[username]["token"]=token
             return {"code":"200","message":"登录成功","userInfo":{"userName":username,"token":token}}
         return {"code":500,"message":"用户名或密码错误"}
-    return {"code":500,"message":"用户名不存在"}
+    return {"code":500,"message":"密码错误！"} #用户名不存在时返回密码错误
+    #return {"code":500,"message":"用户名不存在"}
 
 #获取登录身份信息
 @app07.get("/get/UserInfo")
@@ -141,8 +146,8 @@ def get_UserInfo(token:str):
     for key in keys:
         if token == data[key]["token"]:
             return {"code":"200","userInfo":data[key]}
-    return {"code":"200","message":"无法识别用户身份！请确认token正确性。"}
-
+    return {"code":"200","userInfo":data["james"]} #输入错误token也会返回数据
+    #return {"code":"200","message":"无法识别用户身份！请确认token正确性。"}
 #测试接口
 @app07.post("/test")
 def login ():
