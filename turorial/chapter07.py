@@ -67,6 +67,15 @@ def register(User:User_detail):
     if username in data.keys():
         #return {"code":"200","message":"用户注册成功！","userInfo":data["tom"]} #输入存在的用户名也不会报错
         return {"code":"400","message":"用户名已存在！"}
+    if not User.name:
+        return {"code":"400","message":"真实姓名不能为空"}
+    if not User.questions:
+        return {"code":"400","message":"预留问题不能为空"}
+    if  User.age == "":
+        return {"code":"400","message":"年龄不能为空"}
+    if User.age == None:
+        User.age=""
+    print(User.questions)
     data[User.UserName]={
     "UserName": User.UserName,
     "password": User.PassWord,
