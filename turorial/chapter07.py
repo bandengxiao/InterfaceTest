@@ -29,7 +29,7 @@ class question(str,Enum):
 class User(BaseModel):
     UserName:str
     PassWord:Optional[str] = Field(
-        None, description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
+        ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
     )
 
 
@@ -135,6 +135,10 @@ def login (User:User):
 
     username=User.UserName
     password=User.PassWord
+    if not username:
+        return {"code":500,"message":"用户名不能为空"}
+    if not password:
+        return {"code":500,"message":"密码不能为空"}
     if username in data.keys():
         userDict=data[username]
         if password==userDict["password"]:
@@ -142,8 +146,8 @@ def login (User:User):
             data[username]["token"]=token
             return {"code":"200","message":"登录成功","userInfo":{"userName":username,"token":token}}
         return {"code":500,"message":"用户名或密码错误"}
-    return {"code":500,"message":"密码错误！"} #用户名不存在时返回密码错误
-    #return {"code":500,"message":"用户名不存在"}
+    #return {"code":500,"message":"密码错误！"} #用户名不存在时返回密码错误
+    return {"code":500,"message":"用户名不存在"}
 
 #获取登录身份信息
 @app07.get("/get/UserInfo")
