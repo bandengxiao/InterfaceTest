@@ -29,20 +29,20 @@ class question(str,Enum):
 class User(BaseModel):
     UserName:str
     PassWord:Optional[str] = Field(
-        None, description="密码", max_length=10, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
+        None, description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
     )
 
 
 class UserNew(User):
     newPassWord:Optional[str] = Field(
-        ..., description="密码", max_length=10, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
+        ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
     )
 
 
 
 class User_detail(User):
     PassWord: Optional[str] =Field(
-        ..., description="密码", max_length=10, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
+        ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
     )
     name: str
     age: Optional[str] = Field(
