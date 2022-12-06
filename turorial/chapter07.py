@@ -87,20 +87,27 @@ def register(User:User_detail):
 
 #删除用户
 @app07.post("/cancel/register")
-def cancel_register(token:str=Header(...),UserName:str=Form(...),Password:str=Form(...)):
+def cancel_register(token:str=Header(None),UserName:str=Form(None),Password:str=Form(None)):
+
     username=UserName
-    if token:
-        if token != data[username]["token"]:
-            return {"code":"400","message":"无接口访问权限！"}
-    else:
-        return {"code":"400","message":"无接口访问权限！"}
+    if not username or not username.strip():
+        return {"code": "400", "message": "用户名不能为空！"}
+    if not Password or not Password.strip():
+        return {"code": "400", "message": "密码不能为空！"}
+    if not token or not token.strip():
+        return {"code": "400", "message": "token不能为空！"}
     if username in data.keys():
+        if token:
+            if token != data[username]["token"]:
+                return {"code": "400", "message": "无接口访问权限！"}
+        else:
+            return {"code": "400", "message": "无接口访问权限！"}
         if Password == data[username]["password"]:
             del data[username]
             return {"code":"200","message":"用户注销成功！"}
         return {"code":"400","message":"用户密码错误！"}
-    return {"code":"200","message":"用户注销成功！"} #输入不存在的用户名也会返回注销成功，但用户实际未注销
-    #return {"code":"400","message":"用户不存在！"}
+    else:
+        return {"code": "400", "message": "用户不存在！"}
 
 
 #找回密码
