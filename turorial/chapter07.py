@@ -28,12 +28,17 @@ class question(str,Enum):
 
 class User(BaseModel):
     UserName:str
-    PassWord:Optional[str] = Field(
-        ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
-    )
+    # PassWord:Optional[str] = Field(
+    #     ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
+    # )
 
 
 class UserNew(User):
+    PassWord: Optional[str] = Field(
+        ..., description="密码", max_length=16, example="12",
+        regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
+    )
+
     newPassWord:Optional[str] = Field(
         ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
     )
@@ -44,6 +49,16 @@ class User_detail(User):
     PassWord: Optional[str] =Field(
         ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
     )
+    name: str
+    age: Optional[str] = Field(
+        None, description="年龄", max_length=3, example="12"
+    )
+    questions: Optional[dict] = Field(
+        ..., description="预留问题", example={"对你影响最大的人是？":"xxx","你的生辰属相是？":"老虎"}
+    )
+
+class User_info(User):
+
     name: str
     age: Optional[str] = Field(
         None, description="年龄", max_length=3, example="12"
@@ -112,7 +127,7 @@ def cancel_register(token:str=Header(None),UserName:str=Form(None),Password:str=
 
 #找回密码
 @app07.post("/reget/password")
-def reget(User:User_detail):
+def reget(User:User_info):
 
     if User.UserName in data.keys():
         # if User.PassWord == data[User.UserName]["password"]:
