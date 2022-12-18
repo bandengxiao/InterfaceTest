@@ -67,6 +67,15 @@ class User_info(User):
         ..., description="预留问题", example={"对你影响最大的人是？":"xxx","你的生辰属相是？":"老虎"}
     )
 
+class User_reset_info(User_info):
+
+
+    age: Optional[str] = Field(
+        ..., description="年龄", max_length=3, example="12"
+    )
+
+
+
 #验证密码不能有特殊字符，必须有大小写
 
 def get_uuid():
@@ -127,25 +136,27 @@ def cancel_register(token:str=Header(None),UserName:str=Form(None),Password:str=
 
 #找回密码
 @app07.post("/reget/password")
-def reget(User:User_info):
+def reget(User:User_reset_info):
 
     if User.UserName in data.keys():
         # if User.PassWord == data[User.UserName]["password"]:
             if User.name == data[User.UserName]["name"]:
-                keys=User.questions.keys()
-                for i in keys:
-                    try:
-                        if User.questions[i]==data[User.UserName]["question"][i]:
-                            pass
-                        else:
-                            return {"code":"400","message":"预留问题错误！"}
-                    except (Exception) as e:
-                        return {"code":"400","message":"预留问题错误:"+str(e)}
-                return {"code":"200","message": {"password":data[User.UserName]["password"]}}
-            return {"code":"400","message":"用户名称错误！"}
+                if User.age == data[User.UserName]["age"]:
+                    keys = User.questions.keys()
+                    for i in keys:
+                        try:
+                            if User.questions[i] == data[User.UserName]["question"][i]:
+                                pass
+                            else:
+                                return {"code": "400", "message": "预留问题错误！"}
+                        except (Exception) as e:
+                            return {"code": "400", "message": "预留问题错误:" + str(e)}
+                    return {"code": "200", "message": {"password": data[User.UserName]["password"]}}
+                return {"code":"400","message":"年龄错误！"}
+            return {"code":"400","message":"真实姓名错误！"}
         # return {"code": "400", "message": "用户密码错误！"}
-    return {"code": "400", "message": "预留问题错误！"} #用户不存在时返回预留问题错误
-    #return  {"code":"400","message":"用户不存在！"}
+    #return {"code": "400", "message": "预留问题错误！"} #用户不存在时返回预留问题错误
+    return  {"code":"400","message":"用户不存在！"}
 
 
 #修改密码
