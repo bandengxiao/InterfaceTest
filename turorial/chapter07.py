@@ -167,8 +167,8 @@ def cancel_register(User:UserNew):
         if User.PassWord == data[username]["password"]:
             data[username]["password"]=User.newPassWord
             return {"code":"200","message":"用户密码修改成功!"}
-        return {"code":"400","message":"用户不存在！"}#密码错误时返回用户不存在
-        #return {"code": "400", "message": "密码错误！"}
+        #return {"code":"400","message":"用户不存在！"}#密码错误时返回用户不存在
+        return {"code": "400", "message": "密码错误！"}
     return {"code": "400", "message": "用户不存在！"}
 
 #登录
