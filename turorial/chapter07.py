@@ -32,6 +32,11 @@ class User(BaseModel):
     #     ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
     # )
 
+class User_login(User):
+    # UserName:str
+    PassWord:Optional[str] = Field(
+        ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
+    )
 
 class UserNew(User):
     PassWord: Optional[str] = Field(
@@ -173,7 +178,7 @@ def cancel_register(User:UserNew):
 
 #登录
 @app07.post("/login")
-def login (User:User):
+def login (User:User_login):
 
     username=User.UserName
     password=User.PassWord
