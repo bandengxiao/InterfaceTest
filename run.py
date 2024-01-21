@@ -9,6 +9,7 @@ from fastapi.exceptions import HTTPException, RequestValidationError
 
 # pip install -i https://pypi.tuna.tsinghua.edu.cn/simple/ -r requirements.txt
 #请求地址：http://94.74.121.101:8000/  华为一年机器
+#python -m pip install --upgrade pip
 app = FastAPI(
     title='疫情跟踪器API文档',
     description='疫情跟踪器接口文档',
@@ -43,4 +44,4 @@ app.mount(path='/static',app=StaticFiles(directory='./static'),name='static')
 
 if __name__ == '__main__':
 
-    uvicorn.run('run:app',host='127.0.0.1',port=8000,reload=True,debug=True,workers=1)
+    uvicorn.run('run:app',host='0.0.0.1',port=8000,reload=True,debug=True,workers=1)
