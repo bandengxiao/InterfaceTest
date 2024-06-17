@@ -52,11 +52,14 @@ class UserNew(User):
 
 class User_detail(User):
     PassWord: Optional[str] =Field(
-        ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
+        ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,17}$'
     )
     name: str
+    # age: Optional[str] = Field(
+    #     None, description="年龄", max_length=3, example="12"
+    # )
     age: Optional[str] = Field(
-        None, description="年龄", max_length=3, example="12"
+        ..., description="年龄", max_length=3, example="12"
     )
     questions: Optional[dict] = Field(
         ..., description="预留问题", example={"对你影响最大的人是？":"xxx","你的生辰属相是？":"老虎"}
@@ -91,8 +94,8 @@ def get_uuid():
 @app07.post("/register")
 def register(User:User_detail):
     username=User.UserName
-    if not username:
-        return {"code":"400","message":"用户名不能为空！"}
+    # if not username :
+    #     return {"code":"400","message":"用户名不能为空！"}
     if username in data.keys():
         #return {"code":"200","message":"用户注册成功！","userInfo":data["tom"]} #输入存在的用户名也不会报错
         return {"code":"400","message":"用户名已存在！"}
