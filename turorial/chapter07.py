@@ -52,7 +52,7 @@ class UserNew(User):
 
 class User_detail(User):
     PassWord: Optional[str] =Field(
-        ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,17}$'
+        ..., description="密码", max_length=17, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
     )
     name: str
     # age: Optional[str] = Field(
@@ -97,8 +97,8 @@ def register(User:User_detail):
     # if not username :
     #     return {"code":"400","message":"用户名不能为空！"}
     if username in data.keys():
-        #return {"code":"200","message":"用户注册成功！","userInfo":data["tom"]} #输入存在的用户名也不会报错
-        return {"code":"400","message":"用户名已存在！"}
+        return {"code":"200","message":"用户注册成功！","userInfo":data["tom"]} #输入存在的用户名也不会报错
+        # return {"code":"400","message":"用户名已存在！"}
     if not User.name:
         return {"code":"400","message":"真实姓名不能为空"}
     if not User.questions:
@@ -123,7 +123,7 @@ def cancel_register(token:str=Header(None),UserName:str=Form(None),Password:str=
 
     username=UserName
     if not username or not username.strip():
-        return {"code": "400", "message": "用户名不能为空！"}
+        return {"code": "400", "message": "用户名不存在！"}#应提示用户名不能为空，当前提示用户名不存在
     if not Password or not Password.strip():
         return {"code": "400", "message": "密码不能为空！"}
     if not token or not token.strip():
@@ -135,12 +135,16 @@ def cancel_register(token:str=Header(None),UserName:str=Form(None),Password:str=
         else:
             return {"code": "400", "message": "无接口访问权限！"}
         if Password == data[username]["password"]:
-            del data[username]
-            return {"code":"200","message":"用户注销成功！"}
+            # del data[username]
+            return {"code":"200","message":"用户注销成功！"}#提示用户注销成功，实际未注销成功
         return {"code":"400","message":"用户密码错误！"}
     else:
-        return {"code": "400", "message": "用户不存在！"}
+        return {"code": "400", "message": "用户被锁定！"}#输入错误用户名时应提示用户不存在，当前提示用户被锁定
 
+#调取数据库数据
+@app07.post("/getDataBaseData")
+def getDataBaseData():
+    return data
 
 #找回密码
 @app07.post("/reget/password")
