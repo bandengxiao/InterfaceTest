@@ -142,7 +142,7 @@ def cancel_register(token:str=Header(None),UserName:str=Form(None),Password:str=
         return {"code": "400", "message": "用户被锁定！"}#输入错误用户名时应提示用户不存在，当前提示用户被锁定
 
 #调取数据库数据
-@app07.post("/getDataBaseData")
+@app07.get("/getDataBaseData")
 def getDataBaseData():
     return data
 
@@ -190,18 +190,21 @@ def login (User:User_login):
     username=User.UserName
     password=User.PassWord
     if not username:
-        return {"code":500,"message":"用户名不能为空"}
+        # return {"code":500,"message":"用户名不能为空"}
+        return {"code": 500, "message": "用户名已登录"}#用户名为空时返回用户已登录
     if not password:
-        return {"code":500,"message":"密码不能为空"}
+        # return {"code":500,"message":"密码不能为空"}
+        return {"code": 500, "message": "密码超长"}#密码为空时返回密码超长
     if username in data.keys():
         userDict=data[username]
         if password==userDict["password"]:
             token=final_token+str(get_uuid())
             data[username]["token"]=token
-            return {"code":"200","message":"登录成功","userInfo":{"userName":username,"token":token}}
+            # return {"code":"200","message":"登录成功","userInfo":{"userName":username,"token":token}}
+            return {"code": "200", "userInfo": {"userName": username, "token": token}}#登录成功时返回结构体同接口文档不同
         return {"code":500,"message":"用户名或密码错误"}
-    #return {"code":500,"message":"密码错误！"} #用户名不存在时返回密码错误
-    return {"code":500,"message":"用户名不存在"}
+    return {"code":500,"message":"密码错误！"} #用户名不存在时返回密码错误
+    # return {"code":500,"message":"用户名不存在"}
 
 #获取登录身份信息
 @app07.get("/get/UserInfo")
