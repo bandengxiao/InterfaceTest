@@ -52,7 +52,7 @@ class UserNew(User):
 
 class User_detail(User):
     PassWord: Optional[str] =Field(
-        ..., description="密码", max_length=17, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
+        ..., description="密码", max_length=16, example="12",regex='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[\da-zA-Z!@#$%^&*]{8,16}$'
     )
     name: str
     # age: Optional[str] = Field(
@@ -94,8 +94,8 @@ def get_uuid():
 @app07.post("/register")
 def register(User:User_detail):
     username=User.UserName
-    # if not username :
-    #     return {"code":"400","message":"用户名不能为空！"}
+    if not username :
+        return {"code":"400","message":"用户名不能为空！"}
     if username in data.keys():
         return {"code":"200","message":"用户注册成功！","userInfo":data["tom"]} #输入存在的用户名也不会报错
         # return {"code":"400","message":"用户名已存在！"}
@@ -107,15 +107,20 @@ def register(User:User_detail):
         return {"code":"400","message":"年龄不能为空"}
     if User.age == None:
         User.age=""
-    print(User.questions)
-    data[User.UserName]={
-    "UserName": User.UserName,
-    "password": User.PassWord,
-    "age":User.age,
-    "name":User.name,
+    for x in User.questions.keys():
+        if User.questions[x]=="":
+            return {"code":"400","message":"预留问题不能为空"}
+    # print(User.questions)
+    # print(User.UserName)
+    # print(type(User.UserName.strip()))
+    data[User.UserName.strip()]={
+    "UserName": User.UserName.strip(),
+    "password": User.PassWord.strip(),
+    "age":User.age.strip(),
+    "name":User.name.strip(),
     "question":User.questions
   }
-    return {"code":"200","message":"用户注册成功！","userInfo":data[User.UserName]}
+    return {"code":"200","message":"用户注册成功！","userInfo":data[User.UserName.strip()]}
 
 #删除用户
 @app07.post("/cancel/register")
@@ -187,8 +192,8 @@ def cancel_register(User:UserNew):
 @app07.post("/login")
 def login (User:User_login):
 
-    username=User.UserName
-    password=User.PassWord
+    username=User.UserName.strip()
+    password=User.PassWord.strip()
     if not username:
         # return {"code":500,"message":"用户名不能为空"}
         return {"code": 500, "message": "用户名已登录"}#用户名为空时返回用户已登录

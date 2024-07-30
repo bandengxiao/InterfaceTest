@@ -5,6 +5,8 @@ process_ID=$(ps aux | grep run.py | grep -v grep | awk '{print $2}')
 
 base_path="/data0/InterfaceTest"
 
+mv /data0/InterfaceTest /backup
+
 rm -rf ${base_path}/*
 
 
