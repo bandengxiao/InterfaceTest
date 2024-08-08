@@ -140,8 +140,8 @@ def cancel_register(token:str=Header(None),UserName:str=Form(None),Password:str=
         else:
             return {"code": "400", "message": "无接口访问权限！"}
         if Password == data[username]["password"]:
-            # del data[username]
-            return {"code":"200","message":"用户注销成功！"}#提示用户注销成功，实际未注销成功
+            del data[username]
+            return {"code":"200","message":"用户注销成功！"}
         return {"code":"400","message":"用户密码错误！"}
     else:
         return {"code": "400", "message": "用户被锁定！"}#输入错误用户名时应提示用户不存在，当前提示用户被锁定
