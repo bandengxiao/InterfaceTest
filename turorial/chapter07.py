@@ -135,6 +135,9 @@ def cancel_register(token:str=Header(None),UserName:str=Form(None),Password:str=
         return {"code": "400", "message": "token不能为空！"}
     if username in data.keys():
         if token:
+            print(token)
+            print(data[username]["token"])
+            print(data[username])
             if token != data[username]["token"]:
                 return {"code": "400", "message": "无接口访问权限！"}
         else:
@@ -144,7 +147,7 @@ def cancel_register(token:str=Header(None),UserName:str=Form(None),Password:str=
             return {"code":"200","message":"用户注销成功！"}
         return {"code":"400","message":"用户密码错误！"}
     else:
-        return {"code": "400", "message": "用户被锁定！"}#输入错误用户名时应提示用户不存在，当前提示用户被锁定
+        return {"code": "400", "message": "用户名不存在！"}
 
 #调取数据库数据
 @app07.get("/getDataBaseData")
@@ -208,8 +211,8 @@ def login (User:User_login):
             # return {"code":"200","message":"登录成功","userInfo":{"userName":username,"token":token}}
             return {"code": "200", "userInfo": {"userName": username, "token": token}}#登录成功时返回结构体同接口文档不同
         return {"code":500,"message":"用户名或密码错误"}
-    return {"code":500,"message":"密码错误！"} #用户名不存在时返回密码错误
-    # return {"code":500,"message":"用户名不存在"}
+    # return {"code":500,"message":"密码错误！"} #用户名不存在时返回密码错误
+    return {"code":500,"message":"用户名不存在"}
 
 #获取登录身份信息
 @app07.get("/get/UserInfo")
